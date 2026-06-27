@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1170 2532" width="1170" height="2532">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0a1620"/>
+      <stop offset="100%" stop-color="#07080f"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="35%" r="40%">
+      <stop offset="0%" stop-color="#1a6e5a" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#0a1620" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1170" height="2532" fill="url(#bg)"/>
+  <rect width="1170" height="2532" fill="url(#glow)"/>
+  <g transform="translate(585 950)">
+    <circle cx="0" cy="0" r="180" fill="#134252"/>
+    <path d="M0 -110 L40 30 L180 30 L65 110 L110 250 L0 170 L-110 250 L-65 110 L-180 30 L-40 30 Z" fill="#9be7c5"/>
+  </g>
+  <text x="585" y="1280" text-anchor="middle" fill="#fff" font-family="system-ui, -apple-system, sans-serif" font-size="76" font-weight="700" letter-spacing="-1">BreakFree</text>
+  <text x="585" y="1340" text-anchor="middle" fill="#9be7c5" font-family="system-ui, -apple-system, sans-serif" font-size="32" font-weight="400">a private AI sobriety coach</text>
+</svg>

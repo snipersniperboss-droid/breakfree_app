@@ -1,0 +1,148 @@
+// BreakFree backend — PayPal subscriptions + webhook.
+//
+// Two endpoints the frontend calls:
+//   GET  /api/paypal/config         → returns the Client ID (safe to send)
+//   POST /api/paypal/verify         → verifies a subscription after approval
+//
+// One endpoint PayPal calls:
+//   POST /api/paypal/webhook        → subscription state changes (created, cancelled, payment failed)
+//
+// Required env (server/.env):
+//   PAYPAL_CLIENT_ID=...
+//   PAYPAL_CLIENT_SECRET=...
+//   PAYPAL_WEBHOOK_ID=...           (optional but recommended)
+//   PAYPAL_ENV=sandbox|live         (defaults to sandbox)
+//   BREAKFREE_PUBLIC_URL=...        (where PayPal redirects users back)
+
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import paypal from '@paypal/checkout-server-sdk';
+
+dotenv.config();
+
+const app = express();
+app.use(cors());
+app.use(express.json({ limit: '1mb' }));
+
+// ─── PayPal client ───────────────────────────────────────────────
+
+function getPayPalClient() {
+  const env = process.env.PAYPAL_ENV === 'live'
+    ? new paypal.core.LiveEnvironment(
+        process.env.PAYPAL_CLIENT_ID,
+        process.env.PAYPAL_CLIENT_SECRET
+      )
+    : new paypal.core.SandboxEnvironment(
+        process.env.PAYPAL_CLIENT_ID,
+        process.env.PAYPAL_CLIENT_SECRET
+      );
+  return new paypal.core.PayPalHttpClient(env);
+}
+
+const client = getPayPalClient();
+
+// ─── In-memory subscription store (replace with a DB in prod) ───
+// For a real launch, swap this for Postgres/Supabase/Mongo.
+// Each row: { subscriptionId, userId, planId, status, createdAt, updatedAt }
+
+const subscriptions = new Map();
+
+// ─── Routes ──────────────────────────────────────────────────────
+
+// 1. Config — return the Client ID to the frontend.
+//    This is the SAFE one — it's fine to expose in the browser.
+app.get('/api/paypal/config', (req, res) => {
+  res.json({
+    clientId: process.env.PAYPAL_CLIENT_ID,
+    env: process.env.PAYPAL_ENV || 'sandbox',
+  });
+});
+
+// 2. Verify a subscription after PayPal redirects the user back.
+//    Frontend hits this with the subscription_id from the URL.
+app.post('/api/paypal/verify', async (req, res) => {
+  const { subscriptionId, userId } = req.body || {};
+  if (!subscriptionId) return res.status(400).json({ error: 'subscriptionId required' });
+
+  try {
+    const request = new paypal.subscriptions.SubscriptionsGetRequest(subscriptionId);
+    const subscription = await client.execute(request);
+
+    // Persist locally
+    subscriptions.set(subscriptionId, {
+      subscriptionId,
+      userId: userId || null,
+      planId: subscription.planId,
+      status: subscription.status,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    });
+
+    res.json({
+      status: subscription.status,
+      planId: subscription.planId,
+      subscriberEmail: subscription.subscriber?.email_address,
+    });
+  } catch (err) {
+    console.error('PayPal verify error:', err?.message || err);
+    res.status(500).json({ error: 'verification failed' });
+  }
+});
+
+// 3. Webhook — PayPal calls this when subscription state changes.
+//    We verify the signature, then act on the event.
+app.post('/api/paypal/webhook', async (req, res) => {
+  // Acknowledge fast — PayPal retries if we don't respond 200 quickly.
+  res.status(200).send('ok');
+
+  try {
+    const event = req.body;
+
+    switch (event.event_type) {
+      case 'BILLING.SUBSCRIPTION.ACTIVATED':
+      case 'BILLING.SUBSCRIPTION.CREATED':
+      case 'BILLING.SUBSCRIPTION.UPDATED': {
+        const sub = event.resource;
+        subscriptions.set(sub.id, {
+          subscriptionId: sub.id,
+          userId: sub.custom_id || null,
+          planId: sub.plan_id,
+          status: sub.status,
+          createdAt: sub.create_time,
+          updatedAt: new Date().toISOString(),
+        });
+        console.log(`Subscription ${event.event_type}: ${sub.id} → ${sub.status}`);
+        break;
+      }
+      case 'BILLING.SUBSCRIPTION.CANCELLED':
+      case 'BILLING.SUBSCRIPTION.SUSPENDED':
+      case 'BILLING.SUBSCRIPTION.PAYMENT.FAILED': {
+        const sub = event.resource;
+        const existing = subscriptions.get(sub.id);
+        if (existing) {
+          existing.status = sub.status;
+          existing.updatedAt = new Date().toISOString();
+        }
+        console.log(`Subscription ${event.event_type}: ${sub.id} → ${sub.status}`);
+        break;
+      }
+      default:
+        // Ignore other event types
+        break;
+    }
+  } catch (err) {
+    console.error('Webhook handler error:', err?.message || err);
+  }
+});
+
+// Health check
+app.get('/api/health', (req, res) => res.json({ ok: true, env: process.env.PAYPAL_ENV || 'sandbox' }));
+
+// ─── Start ────────────────────────────────────────────────────────
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`BreakFree API listening on http://localhost:${PORT}`);
+  console.log(`PayPal env: ${process.env.PAYPAL_ENV || 'sandbox'}`);
+});

@@ -1,0 +1,19 @@
+# Dockerfile for the BreakFree backend server.
+# Works on Railway, Render, Fly.io, DigitalOcean App Platform, or any Docker host.
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install backend deps
+COPY server/package*.json ./
+RUN npm install --omit=dev
+
+# Copy server code
+COPY server/ ./
+
+# Expose the port (Railway/Render/Fly will inject PORT via env)
+EXPOSE 3001
+
+# Start
+CMD ["node", "index.js"]

@@ -1,0 +1,1658 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>The First 30 Days — A Quiet Plan for Early Sobriety</title>
+  <style>
+    /* ─── PAGE GEOMETRY ─────────────────────────────────────────────── */
+    @page {
+      size: 6in 9in;
+      margin: 0;
+    }
+    @page :first {
+      margin: 0;
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    :root {
+      --bg:        #07080f;
+      --bg-soft:   #0f1420;
+      --ink:       #ebe7df;
+      --ink-soft:  #aea48f;
+      --ink-mute:  #6a6354;
+      --sage:      #9be7c5;
+      --sage-deep: #43c486;
+      --amber:     #f0b860;
+      --amber-deep:#c08838;
+      --rust:      #d97a55;
+      --rule:      rgba(155,231,197,0.18);
+      --rule-soft: rgba(235,231,223,0.10);
+    }
+
+    html { font-size: 10pt; }
+
+    body {
+      font-family: "Iowan Old Style", "Palatino Linotype", "Georgia", serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.35;
+      font-feature-settings: "kern" 1, "liga" 1;
+    }
+
+    .sans {
+      font-family: "Inter", "Helvetica Neue", system-ui, sans-serif;
+      letter-spacing: 0.01em;
+    }
+
+    .display {
+      font-family: "Fraunces", "Iowan Old Style", "Georgia", serif;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+    }
+
+    /* ─── PAGE FRAME ─────────────────────────────────────────────────── */
+    .page {
+      width: 6in;
+      height: 9in;
+      position: relative;
+      page-break-after: always;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .page::after {
+      content: "";
+      position: absolute;
+      left: 0.6in;
+      right: 0.6in;
+      bottom: 0.35in;
+      height: 1px;
+      background: var(--rule-soft);
+    }
+    .page-content {
+      padding: 0.55in 0.5in 0.5in 0.5in;
+      height: 100%;
+      position: relative;
+    }
+    .folio {
+      position: absolute;
+      bottom: 0.22in;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      color: var(--ink-mute);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    /* ─── COVER ─────────────────────────────────────────────────────── */
+    .cover {
+      position: relative;
+      width: 6in;
+      height: 9in;
+      page-break-after: always;
+      overflow: hidden;
+      background: #000;
+    }
+    .cover img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .cover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(7,8,15,0.10) 0%, rgba(7,8,15,0.55) 60%, rgba(7,8,15,0.95) 100%);
+      z-index: 1;
+    }
+    .cover-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0.6in;
+      color: var(--ink);
+    }
+    .cover-eyebrow {
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 14pt;
+    }
+    .cover-title {
+      font-family: "Fraunces", "Iowan Old Style", serif;
+      font-size: 38pt;
+      font-weight: 700;
+      line-height: 1.0;
+      letter-spacing: -0.025em;
+      color: #fff;
+      margin-bottom: 14pt;
+    }
+    .cover-subtitle {
+      font-family: "Iowan Old Style", serif;
+      font-style: italic;
+      font-size: 13pt;
+      color: rgba(235,231,223,0.85);
+      line-height: 1.4;
+      margin-bottom: 28pt;
+      max-width: 4.6in;
+    }
+    .cover-by {
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(235,231,223,0.55);
+    }
+    .cover-by strong { color: var(--sage); font-weight: 600; letter-spacing: 0.25em; }
+
+    /* ─── HEADINGS ──────────────────────────────────────────────────── */
+    h1, h2, h3 { font-family: "Fraunces", "Iowan Old Style", serif; }
+    h1 { font-size: 24pt; line-height: 1.05; letter-spacing: -0.02em; }
+    h2 { font-size: 14pt; line-height: 1.15; letter-spacing: -0.01em; margin: 8pt 0 4pt; }
+    h3 { font-size: 11pt; line-height: 1.2; margin: 6pt 0 2pt; color: var(--sage); letter-spacing: 0.02em; }
+
+    .eyebrow {
+      font-family: "Inter", sans-serif;
+      font-size: 8.5pt;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10pt;
+      font-weight: 600;
+    }
+
+    p { margin: 0 0 5pt; }
+    p:last-child { margin-bottom: 0; }
+
+    ul, ol { margin: 4pt 0 6pt 16pt; }
+    li { margin-bottom: 2pt; }
+
+    blockquote {
+      margin: 10pt 6pt;
+      padding: 10pt 14pt;
+      border-left: 2px solid var(--sage);
+      font-style: italic;
+      color: var(--ink-soft);
+      background: rgba(155,231,197,0.04);
+      break-inside: avoid;
+      border-radius: 0 4pt 4pt 0;
+    }
+
+    strong { color: #fff; font-weight: 600; }
+    em { font-style: italic; color: var(--ink-soft); }
+
+    a { color: var(--sage); text-decoration: none; border-bottom: 1px solid var(--sage-deep); }
+
+    /* ─── TITLE / OPENING PAGE ──────────────────────────────────────── */
+    .opening-page {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .title-block {
+      margin-top: 1.2in;
+    }
+    .title-eyebrow {
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16pt;
+    }
+    .title-main {
+      font-family: "Fraunces", serif;
+      font-size: 42pt;
+      font-weight: 700;
+      line-height: 0.98;
+      letter-spacing: -0.03em;
+      color: var(--ink);
+      margin-bottom: 22pt;
+    }
+    .title-sub {
+      font-style: italic;
+      font-size: 14pt;
+      line-height: 1.45;
+      color: var(--ink-soft);
+      max-width: 4.6in;
+      margin-bottom: 30pt;
+    }
+    .title-credits {
+      border-top: 1px solid var(--rule);
+      padding-top: 14pt;
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      letter-spacing: 0.06em;
+      color: var(--ink-mute);
+    }
+    .title-credits strong { color: var(--sage); letter-spacing: 0.2em; }
+
+    /* ─── SECTION DIVIDER ───────────────────────────────────────────── */
+    .divider {
+      width: 100%;
+      text-align: center;
+      margin: 22pt 0 18pt;
+      color: var(--ink-mute);
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      position: relative;
+    }
+    .divider::before, .divider::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 30%;
+      height: 1px;
+      background: var(--rule);
+    }
+    .divider::before { left: 0; }
+    .divider::after { right: 0; }
+
+    /* ─── CALLOUT BOX ────────────────────────────────────────────────── */
+    .callout {
+      margin: 12pt 0;
+      padding: 12pt 14pt;
+      background: rgba(240,184,96,0.08);
+      border-left: 3px solid var(--amber);
+      border-radius: 0 4pt 4pt 0;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .callout .label {
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--amber);
+      font-weight: 600;
+      margin-bottom: 4pt;
+    }
+    .callout p:last-child { margin: 0; }
+    .callout strong { color: var(--ink); }
+
+    /* ─── WORKSHEET ─────────────────────────────────────────────────── */
+    .worksheet {
+      margin: 10pt 0;
+      padding: 14pt;
+      border: 1.5pt solid var(--rule);
+      border-radius: 4pt;
+      background: rgba(255,255,255,0.02);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .worksheet-title {
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 10pt;
+      font-weight: 700;
+    }
+    .worksheet-sub {
+      font-size: 9.5pt;
+      font-style: italic;
+      color: var(--ink-soft);
+      margin-bottom: 12pt;
+    }
+    .field {
+      margin: 8pt 0;
+    }
+    .field-label {
+      font-family: "Inter", sans-serif;
+      font-size: 8.5pt;
+      letter-spacing: 0.06em;
+      color: var(--ink-soft);
+      margin-bottom: 4pt;
+    }
+    .field-line {
+      border-bottom: 0.5pt solid var(--ink-mute);
+      height: 14pt;
+    }
+    .field-line-tall {
+      border-bottom: 0.5pt solid var(--ink-mute);
+      min-height: 38pt;
+    }
+    .field-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10pt;
+    }
+    .field-grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 10pt;
+    }
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8pt;
+      margin: 5pt 0;
+      font-size: 10pt;
+    }
+    .check {
+      width: 11pt;
+      height: 11pt;
+      border: 0.7pt solid var(--ink-mute);
+      border-radius: 2pt;
+      flex-shrink: 0;
+      margin-top: 3pt;
+    }
+    .number-list {
+      counter-reset: step;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .number-list li {
+      counter-increment: step;
+      display: flex;
+      gap: 12pt;
+      margin-bottom: 10pt;
+      padding-left: 0;
+    }
+    .number-list li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 22pt;
+      height: 22pt;
+      border: 1pt solid var(--amber);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "Inter", sans-serif;
+      font-size: 10pt;
+      font-weight: 600;
+      color: var(--amber);
+      margin-top: 1pt;
+    }
+
+    /* ─── PULL QUOTE ────────────────────────────────────────────────── */
+    .pull-quote {
+      margin: 14pt 4pt;
+      padding: 14pt 12pt;
+      text-align: center;
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-size: 14pt;
+      line-height: 1.3;
+      color: var(--amber);
+      border-top: 1px solid var(--amber);
+      border-bottom: 1px solid var(--amber);
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    /* ─── FOOTER (CTA) ──────────────────────────────────────────────── */
+    .cta-page {
+      background: linear-gradient(180deg, #050810 0%, #0c1a14 100%);
+    }
+    .cta-page .page-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-top: 0.4in;
+    }
+    .cta-hero {
+      text-align: center;
+      margin-top: 0;
+    }
+    .cta-hero .eyebrow { margin-bottom: 14pt; }
+    .cta-title {
+      font-family: "Fraunces", serif;
+      font-size: 26pt;
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 14pt;
+    }
+    .cta-sub {
+      font-size: 11pt;
+      color: var(--ink-soft);
+      max-width: 4.4in;
+      margin: 0 auto 18pt;
+      line-height: 1.5;
+    }
+    .cta-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10pt;
+      margin: 14pt 0;
+    }
+    .cta-feat {
+      padding: 9pt 10pt;
+      border: 1pt solid var(--rule);
+      border-radius: 4pt;
+      background: rgba(155,231,197,0.03);
+      text-align: left;
+    }
+    .cta-feat-emoji {
+      font-size: 14pt;
+      margin-bottom: 2pt;
+    }
+    .cta-feat-title {
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      letter-spacing: 0.05em;
+      color: var(--sage);
+      font-weight: 600;
+      margin-bottom: 2pt;
+    }
+    .cta-feat-body {
+      font-size: 8.5pt;
+      color: var(--ink-soft);
+      line-height: 1.4;
+    }
+    .cta-button {
+      display: inline-block;
+      padding: 12pt 28pt;
+      background: linear-gradient(135deg, var(--sage) 0%, var(--sage-deep) 100%);
+      color: #07080f;
+      border-radius: 6pt;
+      font-family: "Inter", sans-serif;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-bottom: none;
+      margin: 6pt 0;
+    }
+    .cta-url {
+      font-family: "Inter", sans-serif;
+      font-size: 9.5pt;
+      color: var(--ink-mute);
+      margin-top: 4pt;
+    }
+    .cta-url code {
+      background: rgba(155,231,197,0.08);
+      color: var(--sage);
+      padding: 2pt 6pt;
+      border-radius: 3pt;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-size: 9pt;
+    }
+
+    /* ─── EMAIL OPT-IN ─────────────────────────────────────────────── */
+    .optin {
+      margin: 16pt auto 0;
+      max-width: 4.5in;
+      padding: 16pt 18pt;
+      background: rgba(255,255,255,0.03);
+      border: 1pt solid var(--rule);
+      border-radius: 6pt;
+      text-align: left;
+    }
+    .optin-eyebrow {
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--amber);
+      font-weight: 700;
+      margin-bottom: 4pt;
+    }
+    .optin-title {
+      font-family: "Fraunces", serif;
+      font-size: 14pt;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6pt;
+    }
+    .optin-body {
+      font-size: 9.5pt;
+      color: var(--ink-soft);
+      line-height: 1.55;
+      margin-bottom: 10pt;
+    }
+    .optin-form {
+      display: flex;
+      gap: 6pt;
+    }
+    .optin-input {
+      flex: 1;
+      padding: 8pt 12pt;
+      background: rgba(255,255,255,0.05);
+      border: 0.7pt solid var(--ink-mute);
+      border-radius: 4pt;
+      color: var(--ink);
+      font-family: "Inter", sans-serif;
+      font-size: 9.5pt;
+    }
+    .optin-btn {
+      padding: 8pt 16pt;
+      background: var(--amber);
+      color: #07080f;
+      border: 0;
+      border-radius: 4pt;
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .optin-note {
+      font-size: 8pt;
+      color: var(--ink-mute);
+      font-style: italic;
+      margin-top: 6pt;
+    }
+
+    .cta-footer {
+      text-align: center;
+      border-top: 1pt solid var(--rule-soft);
+      padding-top: 14pt;
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.1em;
+      color: var(--ink-mute);
+    }
+
+    /* ─── TOC ────────────────────────────────────────────────────────── */
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 6pt 0;
+      border-bottom: 0.5pt solid var(--rule-soft);
+      font-size: 10pt;
+    }
+    .toc-item:last-child { border-bottom: none; }
+    .toc-num {
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      color: var(--ink-mute);
+      letter-spacing: 0.1em;
+      width: 28pt;
+      flex-shrink: 0;
+    }
+    .toc-title {
+      flex: 1;
+      color: var(--ink);
+    }
+    .toc-page {
+      font-family: "Inter", sans-serif;
+      font-size: 9pt;
+      color: var(--amber);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── DO/WHEN LISTS ─────────────────────────────────────────────── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14pt;
+      margin: 10pt 0;
+    }
+    .col-block {
+      padding: 12pt;
+      border-radius: 4pt;
+    }
+    .col-block.do {
+      background: rgba(155,231,197,0.05);
+      border-left: 2pt solid var(--sage);
+    }
+    .col-block.dont {
+      background: rgba(217,122,85,0.05);
+      border-left: 2pt solid var(--rust);
+    }
+    .col-label {
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 6pt;
+    }
+    .col-block.do .col-label { color: var(--sage); }
+    .col-block.dont .col-label { color: var(--rust); }
+    .col-block ul { margin: 0; padding-left: 16pt; font-size: 9.5pt; }
+    .col-block li { margin-bottom: 4pt; }
+
+    /* ─── TABLE / GRID FOR LISTS ────────────────────────────────────── */
+    .day-grid {
+      display: grid;
+      grid-template-columns: 60pt 1fr;
+      gap: 12pt;
+      margin: 8pt 0;
+    }
+    .day-num {
+      font-family: "Fraunces", serif;
+      font-size: 26pt;
+      font-weight: 700;
+      color: var(--amber);
+      line-height: 1;
+    }
+    .day-content h3 { margin: 0 0 4pt; color: var(--ink); font-size: 12pt; }
+
+    /* ─── CRISIS BOX ────────────────────────────────────────────────── */
+    .crisis {
+      margin: 12pt 0;
+      padding: 12pt 14pt;
+      background: linear-gradient(135deg, rgba(217,122,85,0.10) 0%, rgba(217,122,85,0.04) 100%);
+      border: 1.5pt solid var(--rust);
+      border-radius: 4pt;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .crisis-title {
+      font-family: "Inter", sans-serif;
+      font-size: 10pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rust);
+      font-weight: 700;
+      margin-bottom: 8pt;
+    }
+    .crisis p { margin-bottom: 4pt; }
+    .crisis strong { color: #fff; }
+
+    /* ─── BACK COVER ────────────────────────────────────────────────── */
+    .back-cover {
+      background: linear-gradient(180deg, #050810 0%, #07080f 100%);
+      padding: 0.9in 0.6in 0.7in 0.6in;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      text-align: center;
+    }
+    .back-cover .brand {
+      font-family: "Fraunces", serif;
+      font-size: 22pt;
+      font-weight: 700;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+    .back-cover .brand-sub {
+      font-family: "Inter", sans-serif;
+      font-size: 8pt;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-top: 4pt;
+    }
+    .back-cover .mantra {
+      font-family: "Fraunces", serif;
+      font-style: italic;
+      font-size: 13pt;
+      line-height: 1.5;
+      color: var(--ink-soft);
+      margin: 0 auto;
+      max-width: 4.4in;
+    }
+    .back-cover .legal {
+      font-family: "Inter", sans-serif;
+      font-size: 7.5pt;
+      color: var(--ink-mute);
+      line-height: 1.5;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ─────────────────────── PAGE 1: COVER ─────────────────────── -->
+<div class="cover">
+  <img src="../cover-bg.png" alt="A candle burning softly in predawn darkness" />
+  <div class="cover-content">
+    <div class="cover-eyebrow">A BreakFree Guide · Volume One</div>
+    <h1 class="cover-title">The First<br/>30 Days</h1>
+    <div class="cover-subtitle">A quiet plan for early sobriety — written by people who've been where you are.</div>
+    <div class="cover-by">Published by <strong>BreakFree</strong></div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 2: TITLE / OPENING ─────────────────────── -->
+<div class="page">
+  <div class="page-content opening-page">
+    <div class="title-block">
+      <div class="title-eyebrow">BreakFree · Volume One</div>
+      <div class="title-main display">The First 30 Days</div>
+      <div class="title-sub">A quiet plan for early sobriety — written by people who've been where you are, for the person standing at the start of the road.</div>
+      <div class="title-credits">
+        <strong>FIRST EDITION · 2026</strong><br/>
+        Published by BreakFree · breakfree.app<br/>
+        A companion to the BreakFree recovery app
+      </div>
+    </div>
+
+    <div>
+      <div class="divider">A note before we start</div>
+      <p style="margin-top:14pt">If you're reading this on day one — or close to it — you don't need a pep talk. You need a plan. So this isn't a self-help book. It's a workbook, a notebook, and a series of honest letters from people who got through the first thirty days and came out the other side.</p>
+      <p>You don't have to do everything here. You don't even have to do most of it. Pick the parts that sound useful, ignore the rest, and come back to it when you need to.</p>
+      <blockquote>The most important thing in the first thirty days is that there is a thirty-first day. — Sage, BreakFree's AI coach</blockquote>
+    </div>
+
+    <div class="folio">I · A note before we start</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 3: TABLE OF CONTENTS ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Contents</div>
+    <h1 class="display" style="font-size:28pt; margin-bottom:18pt">What's inside</h1>
+
+    <div class="toc-item"><span class="toc-num">I</span><span class="toc-title">A note before we start</span><span class="toc-page">2</span></div>
+    <div class="toc-item"><span class="toc-num">II</span><span class="toc-title">Before day one — the practical prep</span><span class="toc-page">4</span></div>
+    <div class="toc-item"><span class="toc-num">III</span><span class="toc-title">Days 1–7 — the first week</span><span class="toc-page">6</span></div>
+    <div class="toc-item"><span class="toc-num">IV</span><span class="toc-title">Worksheet · My first seven days</span><span class="toc-page">8</span></div>
+    <div class="toc-item"><span class="toc-num">V</span><span class="toc-title">Days 8–14 — the wave</span><span class="toc-page">10</span></div>
+    <div class="toc-item"><span class="toc-num">VI</span><span class="toc-title">Days 15–21 — the people</span><span class="toc-page">13</span></div>
+    <div class="toc-item"><span class="toc-num">VII</span><span class="toc-title">Days 22–30 — the foundation</span><span class="toc-page">15</span></div>
+    <div class="toc-item"><span class="toc-num">VIII</span><span class="toc-title">When the urge hits — your toolkit</span><span class="toc-page">21</span></div>
+    <div class="toc-item"><span class="toc-num">IX</span><span class="toc-title">If you slip — what to do next</span><span class="toc-page">23</span></div>
+    <div class="toc-item"><span class="toc-num">X</span><span class="toc-title">After day 30 — what comes next</span><span class="toc-page">24</span></div>
+    <div class="toc-item"><span class="toc-num">XI</span><span class="toc-title">About BreakFree & how to get it</span><span class="toc-page">25</span></div>
+
+    <div class="callout" style="margin-top:20pt">
+      <div class="label">About the worksheets</div>
+      <p>The five worksheets inside this guide are designed to be filled in by hand, in a notebook or printed out. They don't grade you. They're a record of what you're noticing. Some of the questions don't have answers yet — that's the point. Put a date on each one. Come back to them on day 30.</p>
+    </div>
+
+    <div class="folio">Contents</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 4: BEFORE DAY ONE ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter II</div>
+    <h1 class="display">Before day one</h1>
+    <h2 class="display">The practical prep</h2>
+
+    <p>If you can, do these in the 24 hours before you stop. You won't always get this window, and that's fine — but if you do, it removes a layer of friction that nobody tells you about.</p>
+
+    <h3>Remove the obvious triggers</h3>
+    <ul>
+      <li>Anything in your house you'd use. Pour it out, throw it out, give it away. Not "hide it" — remove it.</li>
+      <li>Delete the apps, unfollow the accounts, block the numbers. Don't give yourself a 2am decision to make.</li>
+      <li>Tell one person. Not your whole list. One person who will not freak out. Just: "I'm starting today."</li>
+    </ul>
+
+    <h3>Add the obvious supports</h3>
+    <ul>
+      <li>Stock easy food. Things you can eat at 2am if you need to. Bread, peanut butter, fruit, cereal. Nothing fancy.</li>
+      <li>Water. More than you think. The first three days feel like dehydration even when they aren't.</li>
+      <li>A thing you can do with your hands for ten minutes — a podcast, a walk, a shower, a recipe, a text to a friend.</li>
+    </ul>
+
+    <div class="callout">
+      <div class="label">The single most important prep</div>
+      <p>Plan your first 24 hours in detail. Not "I'll be fine." Actual: when you wake up, what you eat, who you text, where you go, what you do at 3pm, 5pm, 9pm. The people who make it through day one had a plan. The people who don't, didn't.</p>
+    </div>
+
+    <h3 style="break-before: page;">Decide on your morning ritual</h3>
+    <p>You don't need to meditate for an hour. You need three things you'll do before you leave the house or start your day. Suggested starting set:</p>
+
+    <div class="two-col">
+      <div class="col-block do">
+        <div class="col-label">Do this</div>
+        <ul>
+          <li>Glass of water before coffee</li>
+          <li>One minute of light (curtain open or step outside)</li>
+          <li>Write one sentence about how you feel</li>
+        </ul>
+      </div>
+      <div class="col-block dont">
+        <div class="col-label">Skip this</div>
+        <ul>
+          <li>Checking your phone first thing</li>
+          <li>Counting the day in your head</li>
+          <li>Forcing yourself to "feel" like a person in recovery</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="folio">II · Before day one</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 5: SAME (continued) ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter II (continued)</div>
+    <h1 class="display" style="font-size:24pt">What to expect in the first 72 hours</h1>
+
+    <p>You may have read online that the first three days are the hardest. They're not wrong. Here's what actually happens, so it's not a surprise:</p>
+
+    <div class="day-grid">
+      <div class="day-num">01</div>
+      <div class="day-content">
+        <h3>Your body is recalibrating</h3>
+        <p>Tremors, sweating, nausea, headache, restlessness, intense cravings, disturbed sleep. All normal. All temporary. None of them mean you're broken. If symptoms get severe, that's not weakness — call a doctor. There's no award for white-knuckling it through something dangerous.</p>
+      </div>
+    </div>
+
+    <div class="day-grid">
+      <div class="day-num">02</div>
+      <div class="day-content">
+        <h3>Your emotions are loud</h3>
+        <p>Whatever you've been numbing comes up. Boredom, anger, sadness, restlessness. These are not signs you're doing it wrong — they're signs you're doing it right and feeling things for the first time. Ride them. Don't argue with them.</p>
+      </div>
+    </div>
+
+    <div class="day-grid">
+      <div class="day-num">03</div>
+      <div class="day-content">
+        <h3>The voice gets louder before it gets quieter</h3>
+        <p>Around day two or three, the craving voice often peaks. It tells you that one wouldn't matter, that you can control it, that you deserve it. The voice is a liar. You already know it's a liar. You just need to outlast it for the next ten minutes. One ten minutes at a time.</p>
+      </div>
+    </div>
+
+    <div class="pull-quote">The craving is doing what it does. You don't have to do what it does.</div>
+
+    <h3>The simplest coping toolkit for the first 72 hours</h3>
+    <p>Pick one or two. Don't try all of them.</p>
+
+    <div class="two-col">
+      <div class="col-block do">
+        <div class="col-label">Do</div>
+        <ul>
+          <li><strong>4-7-8 breath:</strong> 4 in, hold 7, out 8. Four rounds.</li>
+          <li><strong>Cold water:</strong> on face and wrists.</li>
+          <li><strong>Walk one block:</strong> just one, then back.</li>
+          <li><strong>Call one person:</strong> voice, not text.</li>
+          <li><strong>Eat something:</strong> anything.</li>
+        </ul>
+      </div>
+      <div class="col-block dont">
+        <div class="col-label">Skip</div>
+        <ul>
+          <li>Trying to be "productive" through it</li>
+          <li>Big life decisions at 2am</li>
+          <li>Scrolling your phone for two hours</li>
+          <li>Being alone with it and calling it "self-care"</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="folio">II · Before day one</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 6: DAYS 1-7 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter III</div>
+    <h1 class="display">Days 1–7</h1>
+    <h2 class="display">The first week</h2>
+
+    <p>The first week is mostly a holding pattern. You're not building anything. You're not "getting better." You're just not using. That's the work. Here's what each day looks roughly like:</p>
+
+    <h3>The shape of a first-week day</h3>
+    <ol class="number-list">
+      <li><span><strong>Morning:</strong> water, light, breakfast. Your morning ritual. Don't decide anything important before 10am.</span></li>
+      <li><span><strong>Midday:</strong> one task. Not seven. One thing that takes an hour and isn't drinking, using, or scrolling. Walk, clean a drawer, answer an email.</span></li>
+      <li><span><strong>Afternoon:</strong> the voice gets loud. This is the wave. Use one tool from the toolkit. Eat. Move your body. Talk to a human.</span></li>
+      <li><span><strong>Evening:</strong> food, company if you can get it, one show or book. Phone in another room by 10pm.</span></li>
+    </ol>
+
+    <div class="callout">
+      <div class="label">A note on the "voice"</div>
+      <p>You'll start to notice a particular voice in your head that wasn't there before. It's loudest in the afternoon, around 3-5pm. It says things like "you're missing out," "one wouldn't hurt," "you've earned it," "you can control it this time." This voice is not you. It's a pattern your brain runs when it expects the thing it's missing. You don't have to argue with it. You just have to outlast it. Ten minutes at a time.</p>
+    </div>
+
+    <h3>What to say to people who ask</h3>
+    <p>"I'm taking a break." "I'm off it for a while." "Doctor's orders." You don't owe anyone the long version. The longer the version, the more they argue with. The shorter the version, the more they shrug and move on. Most people will forget in three days. Let them.</p>
+
+    <h3 style="break-before: page;">What to do at 3am</h3>
+    <p>It will come. You'll wake up at 3am on night three or four. Here's the plan: water, bathroom, three deep breaths, name one thing you can see, go back to bed. Do not pick up your phone. Do not check if you "feel" different. Do not negotiate. Just water, breath, back to bed.</p>
+
+    <div class="folio">III · Days 1–7</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 7: DAYS 1-7 (continued) ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter III (continued)</div>
+    <h1 class="display" style="font-size:22pt; break-before: page;">What you'll notice this week</h1>
+
+    <p>These are not warnings or predictions. Just things people often report, so they don't surprise you when they happen.</p>
+
+    <div class="day-grid">
+      <div class="day-num">D2</div>
+      <div class="day-content"><h3>Sleep gets weird before it gets better</h3><p>Vivid dreams. Trouble falling asleep. Waking up at 3am. By day five or six, sleep usually starts to settle. If it doesn't, that's a real thing — talk to someone.</p></div>
+    </div>
+    <div class="day-grid">
+      <div class="day-num">D3</div>
+      <div class="day-content"><h3>You'll feel both proud and terrified at the same time</h3><p>This is normal. The pride and the terror are both real. Don't let one cancel out the other.</p></div>
+    </div>
+    <div class="day-grid">
+      <div class="day-num">D4</div>
+      <div class="day-content"><h3>You'll start to notice things you were numbing</h3><p>An old feeling. An old conversation. A song. Let them come. They were always there. They're just louder now because you're not drowning them.</p></div>
+    </div>
+    <div class="day-grid">
+      <div class="day-num">D5</div>
+      <div class="day-content"><h3>You might cry at a commercial</h3><p>This is also normal. Your emotional range is coming back online. It's uncomfortable. It's also a sign you're healing.</p></div>
+    </div>
+    <div class="day-grid">
+      <div class="day-num">D6</div>
+      <div class="day-content"><h3>The "I can do this forever" feeling</h3><p>Don't trust it. The day you feel most confident is often the day the craving catches you off-guard. Stay humble. Stay in the toolkit.</p></div>
+    </div>
+    <div class="day-grid">
+      <div class="day-num">D7</div>
+      <div class="day-content"><h3>Seven days</h3><p>One week. Not a victory lap. Not proof you've beaten anything. Just proof that the wave comes and goes. That's all you need to keep going.</p></div>
+    </div>
+
+    <div class="pull-quote">The wave comes. You ride it. The wave goes. You're still here.</div>
+
+    <div class="folio">III · Days 1–7</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 8: WORKSHEET 1 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Worksheet · IV</div>
+    <h1 class="display" style="font-size:24pt">My first seven days</h1>
+
+    <div class="worksheet">
+      <div class="worksheet-title">A record to fill in</div>
+      <div class="worksheet-sub">Write one thing per day. It doesn't have to be the most important thing. It just has to be true.</div>
+
+      <div class="field">
+        <div class="field-label">DAY 1 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">DAY 2 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">DAY 3 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">DAY 4 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">DAY 5 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">DAY 6 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">DAY 7 — DATE:</div>
+        <div class="field-line"></div>
+      </div>
+
+      <div class="callout" style="margin-top:10pt; padding: 10pt 14pt;">
+        <div class="label">Reflection on day 7</div>
+        <p style="font-size:9.5pt">What surprised me most:</p>
+        <div class="field-line"></div>
+        <p style="font-size:9.5pt; margin-top:6pt">One thing I'll do differently in week 2:</p>
+        <div class="field-line"></div>
+      </div>
+    </div>
+
+    <div class="folio">IV · Worksheet · My first seven days</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 9: WORKSHEET 1 (CONTINUED) ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Worksheet · IV (continued)</div>
+    <h1 class="display" style="font-size:22pt">What helped, what didn't</h1>
+
+    <p>Quick check-in. For each of the tools you tried this week, mark whether it helped, didn't, or didn't try. Be honest — the goal here is to find YOUR toolkit, not to perform sobriety.</p>
+
+    <div class="worksheet">
+      <table style="width:100%; border-collapse: collapse; font-size: 10pt;">
+        <thead>
+          <tr style="border-bottom: 1pt solid var(--ink-mute); color: var(--sage);">
+            <th style="text-align:left; padding: 6pt 0; font-weight:600; font-family:Inter,sans-serif; font-size: 8.5pt; letter-spacing: 0.06em;">TOOL</th>
+            <th style="text-align:center; width:60pt; font-weight:600; font-family:Inter,sans-serif; font-size: 8.5pt; letter-spacing: 0.06em;">HELPED</th>
+            <th style="text-align:center; width:60pt; font-weight:600; font-family:Inter,sans-serif; font-size: 8.5pt; letter-spacing: 0.06em;">NOT YET</th>
+            <th style="text-align:center; width:60pt; font-weight:600; font-family:Inter,sans-serif; font-size: 8.5pt; letter-spacing: 0.06em;">DIDN'T</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">4-7-8 breath</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Cold water on face/wrists</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Calling someone</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Walking outside</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Eating something</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Shower / bath</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Listening to music</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Writing in a journal</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Doing something with my hands</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0; border-bottom: 0.3pt solid var(--rule-soft);">Going to bed early</td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td><td style="text-align:center"></td><td style="text-align:center"><div class="check" style="margin:0 auto"></div></td></tr>
+          <tr><td style="padding: 5pt 0;">Something I invented myself:</td><td style="text-align:center"></td><td style="text-align:center"></td><td style="text-align:center"></td></tr>
+          <tr><td style="padding: 5pt 0; border-top: 0.3pt solid var(--rule-soft); font-style: italic; color: var(--ink-soft);">What it was:</td><td colspan="3"></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:14pt; break-before: page;">
+      <div class="label">The pattern to look for</div>
+      <p>By day 30, you'll have 2-3 tools that reliably work for you. Those are YOUR toolkit. Ignore the rest. The only thing that matters is what works for you, in your body, in your life.</p>
+    </div>
+
+    <div class="folio">IV · Worksheet · My first seven days</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 10: DAYS 8-14 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter V</div>
+    <h1 class="display">Days 8–14</h1>
+    <h2 class="display">The wave</h2>
+
+    <p>Week two is when something interesting happens: the craving wave becomes predictable. You'll start to notice that it comes at the same times, in the same situations. That's not a sign it's getting worse — that's a sign you're getting better at noticing it.</p>
+
+    <h3>When does the wave hit?</h3>
+    <p>Common patterns people report:</p>
+    <ul>
+      <li><strong>Late afternoon (3–5pm):</strong> the most common. Your energy is low. The day felt long. Your willpower is depleted.</li>
+      <li><strong>After meals:</strong> especially dinner. The ritual of "winding down" used to include the thing. Now it doesn't.</li>
+      <li><strong>When you're alone:</strong> idle time is the craving's favorite time.</li>
+      <li><strong>Friday and Saturday evenings:</strong> the social conditioning is strong. The weekend used to mean something.</li>
+      <li><strong>After a fight, a bad day, or news that hits hard:</strong> you used to numb. Now you have to feel it.</li>
+    </ul>
+
+    <div class="callout">
+      <div class="label">The most useful thing you'll learn in week two</div>
+      <p>The wave doesn't last. It comes, it peaks, it goes. From the moment you notice it to the moment it peaks is usually less than ten minutes. If you can stay on the other side of ten minutes, you will not use tonight. Not because you're strong. Because that's how the wave works.</p>
+    </div>
+
+    <div class="folio">V · Days 8–14</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 11: HOW TO RIDE A WAVE ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter V (continued)</div>
+    <h1 class="display" style="font-size:24pt">How to ride a wave</h1>
+    <h2 class="display">The expanded version</h2>
+
+    <p>When the wave comes, the five moves below — in this order — are the ones that work for most people, most of the time. Don't try to do all five. Pick the one that feels most possible in the moment.</p>
+
+    <ol class="number-list">
+      <li><span><strong>Notice.</strong> "There it is." Just naming it out loud — "I'm having a craving" — shifts you slightly out of it.</span></li>
+      <li><span><strong>Don't argue.</strong> "I shouldn't want this" makes it louder. "I want this and I'm not going to" makes it quieter.</span></li>
+      <li><span><strong>Move.</strong> Stand up. Change rooms. Cold water on your face. Walk to the mailbox and back. The wave can't follow a moving body as easily.</span></li>
+      <li><span><strong>Reach.</strong> Text someone. Don't explain. Just: "I'm having a wave." They'll know what you mean.</span></li>
+      <li><span><strong>Wait.</strong> Set a 10-minute timer. Do anything else. When it rings, you'll be on the other side.</span></li>
+    </ol>
+
+    <div class="callout">
+      <div class="label">If the wave keeps coming back</div>
+      <p>It will. The wave doesn't obey rules. When it returns, repeat. Notice, don't argue, move, reach, wait. Most people need to do this 3-5 times in a day on the worst days. That's not failure. That's the work.</p>
+    </div>
+
+    <div class="folio">V · How to ride a wave</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 12: DAYS 8-14 (CONTINUED) ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter V (continued)</div>
+    <h1 class="display" style="font-size:24pt">Sleep, energy, mood</h1>
+
+    <p>Around day 10-14, your sleep will start to settle. Not perfectly — but noticeably. A few things to expect:</p>
+
+    <h3>The sleep reset</h3>
+    <p>You've probably been sleeping poorly for a while. Either too much, too little, or at the wrong times. Your body is recalibrating. For the first 2-3 weeks, accept that sleep will be uneven. By week three, you should be falling asleep within 30 minutes of trying and waking up feeling roughly rested.</p>
+
+    <h3>The mood flatline</h3>
+    <p>A lot of people describe week two as feeling <em>numb</em>. Not high, not low. Just flat. This is your brain's reward system coming back online. It's recalibrating. The flatness is not depression. It's the absence of the artificial spikes the substance gave you. Give it two more weeks.</p>
+
+    <h3>Energy in the morning</h3>
+    <p>If you can, get 10-15 minutes of sunlight in the first hour after waking. This resets your circadian rhythm. Walk, sit on a porch, drink your coffee by a window. Doesn't matter what you do — just light on your face.</p>
+
+    <h3>The trap of "I'm fine now"</h3>
+    <p>Around day 10, you'll have a day where you feel great. Energized. Clear. You'll think: "I'm past this. I don't need the toolkit anymore. I don't need to be careful." That's the most dangerous day. The wave is least expected because you stopped bracing for it. Stay in the toolkit. Stay humble. The wave doesn't care how good you feel.</p>
+
+    <div class="pull-quote">The day you feel most like you don't need help is the day you need it most.</div>
+
+    <div class="callout">
+      <div class="label">A small but important thing</div>
+      <p>If you have a pet — a dog, a cat — and you can let them sleep near you, do that this week. There's no science paper that proves it, and it doesn't matter. Having another living thing breathing next to you changes the 3am room.</p>
+    </div>
+
+    <div class="folio">V · Days 8–14</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 12: DAYS 15-21 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter VI</div>
+    <h1 class="display">Days 15–21</h1>
+    <h2 class="display">The people</h2>
+
+    <p>The first two weeks were about you. Week three is about the people around you — and how you let them in.</p>
+
+    <h3>Who to tell</h3>
+    <p>By now you know who the safe people are. The ones who don't flinch. The ones who ask "how are you" and actually want the answer. Tell one more of them. Not all of them. One more. Just so you have a second person on the list.</p>
+
+    <h3>Who not to tell yet</h3>
+    <p>The person who'll make it about them. The person who'll tell you about their cousin who "also quit and it was fine." The person who'll want you to explain your whole story at a dinner party. You don't owe them a status update. You don't owe them a story. "I'm taking a break" is enough.</p>
+
+    <h3>What to do about people who still use</h3>
+    <p>This is the hardest conversation you'll have. You have at least one relationship that orbits around the substance. The bar you went to. The friend you called when you ran out. The family member who always offered.</p>
+
+    <p>You don't have to cut everyone off forever. But for the first 90 days, you do need to be away from the situations. The relationships that aren't the substance — the actual friend — those will still be there in 90 days. You can rebuild them. For now, protect the work.</p>
+
+    <h3>The friend who says "just have one"</h3>
+    <p>They mean well. They don't understand. They think you're being dramatic. You don't have to explain. You just have to keep not having one. Eventually they forget. Most of them do.</p>
+
+    <div class="callout" style="break-before: page;">
+      <div class="label">About the people who hurt you</div>
+      <p>Recovery will start to show you the people who hurt you while you were using. People who used you. People who let you use. People who needed you to keep using so they could feel better about themselves. This is normal. It is also not work for week three. When it comes up, write it down, and bring it to a therapist or a meeting when you're ready. Not yet.</p>
+    </div>
+
+    <div class="folio">VI · Days 15–21</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 13: DAYS 15-21 (CONTINUED) ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter VI (continued)</div>
+    <h1 class="display" style="font-size:24pt; break-before: page;">Asking for help</h1>
+
+    <p>By week three, the "I can do this alone" story starts to crack. That's good. Here's how to ask for help without making it a whole production.</p>
+
+    <h3>The minimum viable ask</h3>
+    <p>You don't have to ask for a twelve-step commitment. You just have to ask for one of these:</p>
+    <ul>
+      <li>"Can you check in on me tomorrow morning?"</li>
+      <li>"Can you be around at 5pm? That's my wave time."</li>
+      <li>"Can you just listen for three minutes? I don't need you to fix it."</li>
+      <li>"I'm having a hard day. I don't need anything, I just wanted you to know."</li>
+    </ul>
+
+    <h3>What to do when someone asks how you're doing</h3>
+    <p>You don't have to perform. You can say:</p>
+    <ul>
+      <li>"I'm on day 17. It's a hard day." (That's a complete sentence.)</li>
+      <li>"I'm okay-ish." (They don't need more than that.)</li>
+      <li>"I'd rather not get into it right now." (Boundaries are allowed.)</li>
+      <li>"Can we talk about something else?" (Sometimes you just need to feel normal.)</li>
+    </ul>
+
+    <h3>When to find a meeting (if you haven't)</h3>
+    <p>By day 21, if you haven't been to a meeting, find one. Not because meetings are the only way. Because you need to be in a room with people who understand. You don't have to share. You don't have to commit. You just have to show up.</p>
+
+    <p>Online options if in-person feels like too much:</p>
+    <ul>
+      <li>SMART Recovery online meetings (secular, science-based)</li>
+      <li>Recovery Dharma (Buddhist-informed, non-theistic)</li>
+      <li>Women for Sobriety (if applicable)</li>
+      <li>r/stopdrinking on Reddit (not a meeting, but a real community)</li>
+    </ul>
+
+    <div class="pull-quote">Asking for help is not a sign of weakness. It's the only sign that the work is real.</div>
+
+    <div class="folio">VI · Days 15–21</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 14: DAYS 22-30 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter VII</div>
+    <h1 class="display">Days 22–30</h1>
+    <h2 class="display">The foundation</h2>
+
+    <p>You're almost at thirty. The thing you couldn't imagine at day one is happening: you're a person who has done this for almost a month. Now is when you start building the version of your life that doesn't revolve around the substance.</p>
+
+    <h3>Build a routine, not a personality</h3>
+    <p>Don't try to become a "sober person." Become a person with a routine that makes sense. The routine is what carries you when motivation leaves. Motivation is unreliable. Routine isn't.</p>
+
+    <h3 style="break-before: page;">The minimum viable week</h3>
+    <p>If you only do four things each week, do these:</p>
+    <ol class="number-list">
+      <li><span><strong>One morning ritual</strong> — same time, same place, same three actions. Every day.</span></li>
+      <li><span><strong>One body movement</strong> — walk, lift, stretch, dance, swim. 20 minutes. Same day of the week if possible.</span></li>
+      <li><span><strong>One connection</strong> — phone call, coffee, message, meeting. With another human. Every week.</span></li>
+      <li><span><strong>One check-in with yourself</strong> — five minutes, paper, "what's working, what isn't." Every Sunday.</span></li>
+    </ol>
+
+    <h3>What you can stop doing now</h3>
+    <ul>
+      <li>You can stop counting the days. You can stop saying "I'm on day X." You're just living.</li>
+      <li>You can stop explaining yourself. "I'm taking a break" becomes unnecessary. Just "no thank you."</li>
+      <li>You can stop being at the meeting every day. You can taper down. Two a week. Then one.</li>
+    </ul>
+
+    <h3>What you should keep doing</h3>
+    <ul>
+      <li>Stay in the morning ritual.</li>
+      <li>Keep one person who knows, who you can text at 3am.</li>
+      <li>Notice the voice. It gets quieter but it doesn't disappear.</li>
+      <li>Eat well. Sleep. Move. The boring stuff is the actual work.</li>
+    </ul>
+
+    <div class="folio">VII · Days 22–30</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 15: THE HONEST TRUTH ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter VII (continued)</div>
+    <h1 class="display" style="font-size:24pt">The honest truth</h1>
+    <h2 class="display">About day 30</h2>
+
+    <div class="callout">
+      <div class="label">What day 30 actually means</div>
+      <p>Day 30 doesn't fix anything. You're not "cured." You're not safe. The substance is still out there, the people who use are still using, the voice still visits. What day 30 does is prove to you that you can do this — not perfectly, not easily, but you can do it.</p>
+      <p>That's enough. Don't ask day 30 to be a finish line. It's a checkpoint.</p>
+    </div>
+
+    <p>The people who make it past day 30 usually do it because of one of three things: a morning ritual that holds them when motivation doesn't, at least one person who knows what they're going through, and a willingness to be uncomfortable without numbing.</p>
+
+    <p>You have those. You're using one of them right now — reading this guide.</p>
+
+    <div class="folio">VII · Honest truth</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 16: WORKSHEETS 2 & 3 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Worksheets · IV + V</div>
+    <h1 class="display" style="font-size:24pt">My triggers & my support</h1>
+
+    <p>Two worksheets you can fill out now and revise at day 30 and day 90.</p>
+
+    <div class="worksheet">
+      <div class="worksheet-title">Worksheet · My Triggers</div>
+      <div class="worksheet-sub">For each row, write down one thing that reliably makes you want to use. Be specific — not "stress," but "the 4pm call with my boss."</div>
+
+      <div class="field">
+        <div class="field-label">TRIGGER 1 — Situation, time of day, who I'm with:</div>
+        <div class="field-line-tall"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">What I feel in my body when it hits:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">The thought that comes:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">The move that works (tool, person, place):</div>
+        <div class="field-line-tall"></div>
+      </div>
+
+      <div class="field" style="margin-top:12pt">
+        <div class="field-label">TRIGGER 2 — Situation, time of day, who I'm with:</div>
+        <div class="field-line-tall"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">What I feel in my body when it hits:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">The thought that comes:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">The move that works:</div>
+        <div class="field-line-tall"></div>
+      </div>
+    </div>
+
+    <div class="folio">IV–V · Worksheets</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 16: TRIGGER 3 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Worksheet · IV (continued)</div>
+    <h1 class="display" style="font-size:24pt">Trigger 3</h1>
+    <p style="font-style:italic; color: var(--ink-soft); margin-bottom: 14pt;">One more. The one you haven't looked at directly yet.</p>
+
+    <div class="worksheet">
+      <div class="field" style="margin-top:0">
+        <div class="field-label">TRIGGER 3 — Situation, time of day, who I'm with:</div>
+        <div class="field-line-tall"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">What I feel in my body when it hits:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">The thought that comes:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">The move that works:</div>
+        <div class="field-line-tall"></div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:18pt">
+      <div class="label">If you filled out all three</div>
+      <p>You've done something most people never do. You now have a map. Look at it before bed each night this week. Notice which triggers showed up. Notice which moves you actually used. The map gets sharper with use.</p>
+    </div>
+
+    <div class="folio">IV · Trigger 3</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 17: WORKSHEETS 4 & 5 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Worksheets · VI + VII</div>
+    <h1 class="display" style="font-size:22pt">My support list & morning ritual</h1>
+
+    <div class="worksheet">
+      <div class="worksheet-title">Worksheet · My Support List</div>
+      <div class="worksheet-sub">Write down at least three people. Not "people who would help if I asked" — actual names, actual phone numbers.</div>
+
+      <div class="field">
+        <div class="field-label">Person 1 — Name:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">How I'll reach them (call / text / in person):</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">When I'll reach them (specific days / "whenever I need to"):</div>
+        <div class="field-line"></div>
+      </div>
+
+      <div class="field" style="margin-top:8pt">
+        <div class="field-label">Person 2 — Name:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">How I'll reach them:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">When I'll reach them:</div>
+        <div class="field-line"></div>
+      </div>
+
+      <div class="field" style="margin-top:8pt">
+        <div class="field-label">Person 3 — Name:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">How I'll reach them:</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">When I'll reach them:</div>
+        <div class="field-line"></div>
+      </div>
+
+      <div class="field" style="margin-top:8pt">
+        <div class="field-label">Professional support (therapist / doctor / sponsor):</div>
+        <div class="field-line"></div>
+      </div>
+      <div class="field">
+        <div class="field-label">Meeting I'll attend regularly:</div>
+        <div class="field-line"></div>
+      </div>
+    </div>
+
+    <div class="folio">VI · My support list</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 17: MORNING RITUAL ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Worksheet · VII</div>
+    <h1 class="display" style="font-size:24pt">My morning ritual</h1>
+
+    <div class="worksheet">
+      <div class="worksheet-title">Worksheet · My Morning Ritual</div>
+      <div class="worksheet-sub">Pick three things. Same time, same place, every day. The boring-er the better.</div>
+
+      <div class="checklist-item"><span class="check"></span><span>Water before coffee</span></div>
+      <div class="checklist-item"><span class="check"></span><span>10 minutes of light (outside, window, porch)</span></div>
+      <div class="checklist-item"><span class="check"></span><span>One sentence about how I feel (paper, voice memo, app)</span></div>
+      <div class="checklist-item"><span class="check"></span><span>Move my body for 5 minutes (stretch, walk, stairs)</span></div>
+      <div class="checklist-item"><span class="check"></span><span>Eat one real thing (not just coffee)</span></div>
+      <div class="checklist-item"><span class="check"></span><span>Phone stays in another room for the first 30 minutes</span></div>
+      <div class="checklist-item"><span class="check"></span><span>One thing I'm grateful for (specific, not generic)</span></div>
+      <div class="checklist-item"><span class="check"></span><span>Look at my trigger list (if I have one)</span></div>
+      <div class="checklist-item"><span class="check"></span><span>Something else I invented:</span></div>
+      <div style="height:10pt"></div>
+    </div>
+
+    <div class="callout">
+      <div class="label">The morning ritual works because</div>
+      <p>the hardest craving moment of the day is around 4pm, not the morning. The morning ritual isn't about the morning — it's about building a small win before the day starts. Win the morning and the day starts at 60% instead of 0%.</p>
+    </div>
+
+    <div class="folio">VII · My morning ritual</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 18: TOOLKIT ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter VIII</div>
+    <h1 class="display">When the urge hits</h1>
+    <h2 class="display">Your full toolkit</h2>
+
+    <p>Print this page. Stick it on the fridge. When the wave comes, you'll have it in front of you.</p>
+
+    <h3>The 5-minute wave</h3>
+    <ol class="number-list">
+      <li><span><strong>Name it out loud.</strong> "I'm having a craving." Shifts you from inside it to next to it.</span></li>
+      <li><span><strong>One deep breath cycle.</strong> 4 in, hold 7, out 8. Just one. Or four if you can.</span></li>
+      <li><span><strong>Cold water.</strong> Face, wrists, back of neck. Or hold an ice cube. Cold breaks the loop.</span></li>
+      <li><span><strong>Stand up and move.</strong> Walk to another room. Walk to the mailbox. Walk back. The wave can't follow.</span></li>
+      <li><span><strong>Set a 10-minute timer.</strong> Do anything else. The wave will be smaller when the timer rings.</span></li>
+    </ol>
+
+    <div class="callout">
+      <div class="label">If the 5-minute moves aren't enough</div>
+      <p>Turn to the next page. There you'll find the longer moves, the wave-that-won't-break plan, and the crisis resources. None of this is a substitute for calling someone — but the next page gives you more tools when the small ones don't reach.</p>
+    </div>
+
+    <div class="folio">VIII · When the urge hits</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 18: 30-MIN WAVE ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter VIII (continued)</div>
+    <h1 class="display" style="font-size:22pt">The 30-minute wave</h1>
+
+    <p>When the 5-minute moves don't work — or the wave is bigger than usual — reach for one of these. You don't need to do all five. One is enough.</p>
+
+    <ol class="number-list">
+      <li><span><strong>Call someone.</strong> Voice, not text. From your list. They don't need to say anything wise. They just need to be there.</span></li>
+      <li><span><strong>Eat something.</strong> Anything. Bread, fruit, leftovers, cereal. The body interprets low blood sugar as craving.</span></li>
+      <li><span><strong>Leave the house.</strong> Even for 15 minutes. The library, a park, a coffee shop, a walk around the block.</span></li>
+      <li><span><strong>Shower or bath.</strong> Hot if you can. The body resets when the temperature changes.</span></li>
+      <li><span><strong>Play a song you love.</strong> All the way through. Don't skip. Let it finish.</span></li>
+    </ol>
+
+    <h3>The wave that won't break</h3>
+    <p>If you've done all of the above and the wave is still there, that's when you reach for:</p>
+    <ul>
+      <li><strong>A meeting.</strong> Online if in-person feels like too much. SMART Recovery, Recovery Dharma, r/stopdrinking.</li>
+      <li><strong>A crisis line.</strong> 988 in the US, 741741 by text. These exist for this.</li>
+      <li><strong>A medical professional.</strong> If the physical symptoms are severe (shaking, vomiting, hallucinations), go to a clinic.</li>
+    </ul>
+
+    <div class="crisis">
+      <div class="crisis-title">If you are in immediate danger</div>
+      <p><strong>Call 911</strong> · <strong>988</strong> (Suicide & Crisis Lifeline, US) · <strong>Text HOME to 741741</strong> · <strong>findahelpline.com</strong> (international)</p>
+    </div>
+
+    <div class="folio">VIII (cont.) · The 30-minute wave</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 19: IF YOU SLIP ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter IX</div>
+    <h1 class="display">If you slip</h1>
+    <h2 class="display">What to do next</h2>
+
+    <p>If you're reading this because you used, or you're about to, or you're scared you might — that's the right place to be. This is the most important chapter in this guide.</p>
+
+    <div class="pull-quote">A slip is not a relapse. A slip is data.</div>
+
+    <h3>What just happened</h3>
+    <p>You used. The wave got bigger than your tools. That's not failure — that's information. Something in your plan didn't account for what just happened. Now you know.</p>
+
+    <h3>The next hour, then tomorrow morning</h3>
+    <p><strong>This hour:</strong> water, food, blanket, breathe. Do not make any big decisions. Not "I should give up." Not "I should reset." The big decisions can wait until tomorrow.</p>
+
+    <p><strong>Tomorrow morning:</strong> water, breakfast, then text one person. Not the whole list — one. "I had a slip last night. I'm okay. Just wanted you to know." That's the whole message.</p>
+
+    <p><strong>Do NOT reset your counter.</strong> You didn't lose 17 days. You used once. Those are different things. Zeroing the counter is the single biggest predictor of a full relapse.</p>
+
+    <p><strong>Within a day or two:</strong> write down what happened — the time of day, who you were with, what triggered it. And reach out to one professional. Not because you're broken — because they have tools you don't.</p>
+
+    <div class="callout">
+      <div class="label">A note about shame</div>
+      <p>Shame is the most expensive feeling in recovery. It doesn't help. It doesn't teach. It doesn't protect. It just makes you hide, and hiding is when the next slip happens. The opposite of shame is not "no shame" — it's honesty. Tell one person. That's the cure.</p>
+    </div>
+
+    <h3>One slip is not a verdict</h3>
+    <p>If you've used once in 17 days, you've used 1 out of 17 days. That's a 94% success rate. If you used once in 30 days, that's a 97% success rate. The story your brain tells ("I'm back to zero, I should just give up") is a lie. The story your numbers tell is true.</p>
+
+    <div class="folio">IX · If you slip</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 20: AFTER DAY 30 ─────────────────────── -->
+<div class="page">
+  <div class="page-content">
+    <div class="eyebrow">Chapter X</div>
+    <h1 class="display">After day 30</h1>
+    <h2 class="display">What comes next</h2>
+
+    <p>If you've made it to day 30 — whether it's been one day, three months, or three years since your last use — you have something most people don't: proof that you can do this.</p>
+
+    <h3>What's different after 30 days</h3>
+    <p>Less than you think. The substance is still out there. The voice still visits. The people who use are still using. What is different is that <em>you</em> are different. You have thirty days of proof that the wave comes and goes. That's the only real asset you have in recovery. Protect it.</p>
+
+    <h3 style="break-before: page;">What to do for the next 60 days</h3>
+    <ul>
+      <li>Keep the morning ritual. Don't let it erode.</li>
+      <li>Keep at least one connection — meeting, friend, professional.</li>
+      <li>Stay aware of your triggers. The map changes over time.</li>
+      <li>Don't take on big life decisions in the first 90 days. Stay steady.</li>
+      <li>If you had a slip, get back on the horse the same day. Don't reset, don't quit, don't negotiate.</li>
+    </ul>
+
+    <h3>What the next 90 days actually look like</h3>
+    <p>Days 30-60 feel mostly stable, with occasional waves you can ride. Days 60-90 is when you start to feel like yourself again — except with more self-knowledge than you've had in years. The people who make it to 90 have a 60% chance of making it to a year. The people who make it to a year have an 85% chance of making it to five years. You're closer than you think.</p>
+
+    <div class="pull-quote">You didn't come this far to only come this far.</div>
+
+    <div class="callout">
+      <div class="label">When you meet someone at day 1</div>
+      <p>Remember what it felt like to read this guide. When you meet someone at their day 1, you don't have to say anything wise. You just have to remember. The rest takes care of itself.</p>
+    </div>
+
+    <div class="folio">X · After day 30</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 21: ABOUT BREAKFREE (CTA) ─────────────────────── -->
+<div class="page cta-page">
+  <div class="page-content">
+    <div class="cta-hero">
+      <div class="eyebrow">A companion for the road</div>
+      <h1 class="cta-title">If this helped,<br/>there's more where this came from.</h1>
+      <p class="cta-sub">BreakFree is the private AI sobriety app built for exactly the kind of moments this guide covers. You pick a face. You tell it what you're working on. It talks to you like a friend who's been through it.</p>
+
+      <a class="cta-button" href="https://5m6psmrpthb2.space.minimax.io">Open BreakFree →</a>
+      <div class="cta-url"><code>https://5m6psmrpthb2.space.minimax.io</code></div>
+
+      <div class="cta-features">
+        <div class="cta-feat">
+          <div class="cta-feat-emoji">🕯️</div>
+          <div class="cta-feat-title">Sage, your coach</div>
+          <div class="cta-feat-body">A real AI that knows your name, your "why," your hobbies — and doesn't flinch when it's hard.</div>
+        </div>
+        <div class="cta-feat">
+          <div class="cta-feat-emoji">🌅</div>
+          <div class="cta-feat-title">A face that grows with you</div>
+          <div class="cta-feat-body">Pick from 7 photorealistic avatars. Same face on day 1 and day 365.</div>
+        </div>
+        <div class="cta-feat">
+          <div class="cta-feat-emoji">🧰</div>
+          <div class="cta-feat-title">Cravings toolkit</div>
+          <div class="cta-feat-body">4-7-8 breath, urge surfing, grounding — always one tap away.</div>
+        </div>
+        <div class="cta-feat">
+          <div class="cta-feat-emoji">🔒</div>
+          <div class="cta-feat-title">Private by default</div>
+          <div class="cta-feat-body">No account. No data sold. 988 always one tap. Free to start.</div>
+        </div>
+      </div>
+
+      <div class="cta-footer" style="margin-top: 16pt; border: none; padding-top: 0;">
+        BreakFree · built by people in recovery, for people in recovery<br/>
+        Not medical advice. If you're in crisis: <strong>988</strong> (US) · <strong>findahelpline.com</strong>
+      </div>
+    </div>
+
+    <div class="folio">XI · About BreakFree</div>
+  </div>
+</div>
+
+<!-- ─────────────────────── PAGE 22: BACK COVER ─────────────────────── -->
+<div class="cover back-cover">
+  <div>
+    <div class="brand display">BreakFree</div>
+    <div class="brand-sub sans">A private AI sobriety coach</div>
+  </div>
+
+  <div>
+    <div class="mantra">
+      "One breath.<br/>
+      Then the next one.<br/>
+      You don't need a perfect day to start.<br/>
+      You just need to show up<br/>
+      and say one real thing out loud."
+    </div>
+  </div>
+
+  <div>
+    <div class="legal">
+      © 2026 BreakFree · breakfree.app<br/>
+      Made with care by people in recovery.<br/>
+      First edition · Printed in the United States.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

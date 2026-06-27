@@ -1,0 +1,313 @@
+// LocalStorage-backed state with React context.
+// Holds sobriety profile, daily check-ins, journal, chat history.
+
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { stageFromDays } from './avatar';
+import type { Theme } from '../data/items';
+import type { AvatarId } from '../data/avatars';
+
+export type Substance = 'alcohol' | 'drugs' | 'gambling' | 'porn' | 'social-media' | 'sugar' | 'smoking' | 'other';
+
+export interface Profile {
+  name: string;
+  substance: Substance;
+  customSubstance?: string;
+  startDate: string; // ISO date (YYYY-MM-DD) - the day they began sobriety
+  startTime?: string; // HH:mm, optional
+  why: string; // personal motivation
+  theme: Theme; // cosmetic progression theme
+  hobbies: string[]; // things they love doing
+  personality: string[]; // self-described traits
+  journey: string; // free-text story — anything they want Sage to know
+  city: string; // optional location for StayBusy recommendations
+  onboardedAt: string; // ISO
+  avatarId: AvatarId; // chosen photorealistic preset avatar
+}
+
+export interface CheckIn {
+  date: string; // YYYY-MM-DD
+  mood: 1 | 2 | 3 | 4 | 5;
+  craving: 1 | 2 | 3 | 4 | 5;
+  note?: string;
+  wins?: string;
+}
+
+export interface JournalEntry {
+  id: string;
+  at: string; // ISO datetime
+  text: string;
+  mood?: number;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'coach';
+  text: string;
+  at: string; // ISO
+}
+
+export interface AppState {
+  profile: Profile | null;
+  checkIns: CheckIn[];
+  journal: JournalEntry[];
+  chat: ChatMessage[];
+  reminderEnabled: boolean;
+  reminderHour: number; // 0-23
+  seenUnlocks: number; // highest stage the user has seen the unlock modal for
+  // Community
+  seenConduct: boolean;
+  peerMessages: Record<string, PeerMessage[]>; // by room id
+  blockedMembers: string[];
+  reportedMessages: string[];
+  joinedSessions: string[];
+  // Wins
+  wins: Win[];
+}
+
+export interface PeerMessage {
+  id: string;
+  roomId: string;
+  memberId: string | 'me'; // 'me' = the local user
+  text: string;
+  at: string; // ISO
+  reactions?: Record<string, string[]>; // emoji -> member ids
+  system?: boolean; // "Marcus joined the room" type messages
+}
+
+export type WinTag = 'showed-up' | 'craving-ride' | 'self-care' | 'connection' | 'helped' | 'rest' | 'movement' | 'create' | 'other';
+
+export interface Win {
+  id: string;
+  at: string; // ISO
+  text: string;
+  tags: WinTag[];
+}
+
+const STORAGE_KEY = 'breakfree.v1';
+
+const defaultState: AppState = {
+  profile: null,
+  checkIns: [],
+  journal: [],
+  chat: [],
+  reminderEnabled: false,
+  reminderHour: 21,
+  seenUnlocks: -1,
+  seenConduct: false,
+  peerMessages: {},
+  blockedMembers: [],
+  reportedMessages: [],
+  joinedSessions: [],
+  wins: [],
+};
+
+function loadState(): AppState {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return defaultState;
+    const parsed = JSON.parse(raw);
+    return { ...defaultState, ...parsed };
+  } catch {
+    return defaultState;
+  }
+}
+
+function saveState(s: AppState) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+  } catch {
+    /* ignore */
+  }
+}
+
+// Utilities
+export function daysSober(startDate: string, now = new Date()): number {
+  if (!startDate) return 0;
+  const start = new Date(startDate + 'T00:00:00');
+  const diff = now.getTime() - start.getTime();
+  return Math.max(0, Math.floor(diff / (1000 * 60 * 60 * 24)));
+}
+
+export function todayKey(d = new Date()): string {
+  return d.toISOString().slice(0, 10);
+}
+
+export function formatDateLong(d = new Date()): string {
+  return d.toLocaleDateString(undefined, {
+    weekday: 'long',
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  });
+}
+
+// Context
+interface Ctx {
+  state: AppState;
+  setState: (updater: (s: AppState) => AppState) => void;
+  days: number;
+  stage: ReturnType<typeof stageFromDays>;
+  profile: Profile | null;
+  theme: Theme;
+  seenConduct: boolean;
+  addChat: (m: ChatMessage) => void;
+  addJournal: (text: string, mood?: number) => void;
+  addCheckIn: (c: CheckIn) => void;
+  setProfile: (p: Profile) => void;
+  markSeenUnlock: (stage: number) => void;
+  setSeenConduct: () => void;
+  addPeerMessage: (m: PeerMessage) => void;
+  toggleBlockMember: (id: string) => void;
+  reportPeerMessage: (id: string) => void;
+  joinSession: (id: string) => void;
+  leaveSession: (id: string) => void;
+  addWin: (w: Omit<Win, 'id' | 'at'>) => void;
+  reset: () => void;
+}
+
+const StateCtx = createContext<Ctx | null>(null);
+
+export function StateProvider({ children }: { children: ReactNode }) {
+  const [state, setStateRaw] = useState<AppState>(() => loadState());
+
+  useEffect(() => {
+    saveState(state);
+  }, [state]);
+
+  const setState = (updater: (s: AppState) => AppState) => {
+    setStateRaw((prev) => updater(prev));
+  };
+
+  const days = state.profile ? daysSober(state.profile.startDate) : 0;
+  const stage = stageFromDays(days);
+
+  const addChat = (m: ChatMessage) =>
+    setStateRaw((prev) => ({ ...prev, chat: [...prev.chat, m] }));
+  const addJournal = (text: string, mood?: number) =>
+    setStateRaw((prev) => ({
+      ...prev,
+      journal: [
+        ...prev.journal,
+        { id: crypto.randomUUID(), at: new Date().toISOString(), text, mood },
+      ],
+    }));
+  const addCheckIn = (c: CheckIn) =>
+    setStateRaw((prev) => ({
+      ...prev,
+      checkIns: [
+        ...prev.checkIns.filter((x) => x.date !== c.date),
+        c,
+      ].sort((a, b) => a.date.localeCompare(b.date)),
+    }));
+  const setProfile = (p: Profile) =>
+    setStateRaw((prev) => ({ ...prev, profile: p }));
+  const markSeenUnlock = (stageToAck: number) =>
+    setStateRaw((prev) =>
+      prev.seenUnlocks >= stageToAck
+        ? prev
+        : { ...prev, seenUnlocks: stageToAck }
+    );
+  const setSeenConduct = () =>
+    setStateRaw((prev) => ({ ...prev, seenConduct: true }));
+  const addPeerMessage = (m: PeerMessage) =>
+    setStateRaw((prev) => ({
+      ...prev,
+      peerMessages: {
+        ...prev.peerMessages,
+        [m.roomId]: [...(prev.peerMessages[m.roomId] ?? []), m],
+      },
+    }));
+  const toggleBlockMember = (id: string) =>
+    setStateRaw((prev) => ({
+      ...prev,
+      blockedMembers: prev.blockedMembers.includes(id)
+        ? prev.blockedMembers.filter((x) => x !== id)
+        : [...prev.blockedMembers, id],
+    }));
+  const reportPeerMessage = (id: string) =>
+    setStateRaw((prev) =>
+      prev.reportedMessages.includes(id)
+        ? prev
+        : { ...prev, reportedMessages: [...prev.reportedMessages, id] }
+    );
+  const joinSession = (id: string) =>
+    setStateRaw((prev) =>
+      prev.joinedSessions.includes(id)
+        ? prev
+        : { ...prev, joinedSessions: [...prev.joinedSessions, id] }
+    );
+  const leaveSession = (id: string) =>
+    setStateRaw((prev) => ({
+      ...prev,
+      joinedSessions: prev.joinedSessions.filter((x) => x !== id),
+    }));
+  const addWin = (w: Omit<Win, 'id' | 'at'>) =>
+    setStateRaw((prev) => ({
+      ...prev,
+      wins: [
+        ...prev.wins,
+        { ...w, id: crypto.randomUUID(), at: new Date().toISOString() },
+      ],
+    }));
+  const reset = () => {
+    setStateRaw(defaultState);
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+  };
+
+  return (
+    <StateCtx.Provider
+      value={{
+        state,
+        setState,
+        days,
+        stage,
+        profile: state.profile,
+        theme: (state.profile?.theme ?? 'sage') as Theme,
+        seenConduct: state.seenConduct,
+        addChat,
+        addJournal,
+        addCheckIn,
+        setProfile,
+        markSeenUnlock,
+        setSeenConduct,
+        addPeerMessage,
+        toggleBlockMember,
+        reportPeerMessage,
+        joinSession,
+        leaveSession,
+        addWin,
+        reset,
+      }}
+    >
+      {children}
+    </StateCtx.Provider>
+  );
+}
+
+export function useApp() {
+  const ctx = useContext(StateCtx);
+  if (!ctx) throw new Error('useApp must be used inside StateProvider');
+  return ctx;
+}
+
+export function setProfile(p: Profile) {
+  // helper used by onboarding; for safety also dispatch via context normally
+  const s = loadState();
+  saveState({ ...s, profile: p });
+}
+
+// Substance label helper
+export const SUBSTANCE_LABELS: Record<Substance, string> = {
+  alcohol: 'Alcohol',
+  drugs: 'Drugs',
+  gambling: 'Gambling',
+  porn: 'Pornography',
+  'social-media': 'Social Media',
+  sugar: 'Sugar / Junk Food',
+  smoking: 'Smoking / Nicotine',
+  other: 'Something else',
+};

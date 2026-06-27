@@ -1,0 +1,327 @@
+import { useState, useMemo } from 'react';
+
+import { useApp } from '../state/store';
+import {
+  ACTIVITIES,
+  CATEGORIES,
+  SAMPLE_EVENTS,
+  activitiesForMood,
+  activitiesForProfile,
+  type Activity,
+  type ActivityCategory,
+  type LocalEvent,
+} from '../data/staybusy';
+import { HOBBY_TAGS, PERSONALITY_TAGS } from '../data/onboarding';
+
+export default function StayBusy() {
+  const { state, addWin } = useApp();
+  const profile = state.profile!;
+  const [tab, setTab] = useState<'foryou' | 'categories' | 'events'>('foryou');
+  const [activeCat, setActiveCat] = useState<ActivityCategory>('move');
+  const [expandedActivity, setExpandedActivity] = useState<string | null>(null);
+
+  // "For you" = mood-matched + profile-matched
+  const forYou = useMemo(() => {
+    const mood = state.checkIns[state.checkIns.length - 1]?.mood ?? 3;
+    const craving = state.checkIns[state.checkIns.length - 1]?.craving ?? 0;
+    const moodGuess = craving >= 4 ? 'craving' : mood <= 2 ? 'low' : mood >= 4 ? 'bored' : null;
+    const byMood = moodGuess ? activitiesForMood(moodGuess) : [];
+    const byProfile = activitiesForProfile(profile.hobbies ?? [], profile.personality ?? []);
+    // Merge, dedupe by id, prefer profile-ranked
+    const seen = new Set<string>();
+    const merged: Activity[] = [];
+    [...byProfile, ...byMood].forEach((a) => {
+      if (!seen.has(a.id)) {
+        seen.add(a.id);
+        merged.push(a);
+      }
+    });
+    return merged.slice(0, 6);
+  }, [profile.hobbies, profile.personality, state.checkIns]);
+
+  const catActivities = ACTIVITIES.filter((a) => a.category === activeCat);
+  const events = SAMPLE_EVENTS;
+  const city = profile.city || 'your area';
+
+  const doneIds = new Set(state.wins.filter((w) => w.tags.includes('movement') || w.tags.includes('rest') || w.tags.includes('create') || w.tags.includes('connection')).map((w) => w.text));
+  void doneIds;
+
+  const logDone = (a: Activity) => {
+    addWin({
+      text: `Did it: ${a.title}`,
+      tags: [a.category === 'move' ? 'movement' : a.category === 'rest' ? 'rest' : a.category === 'create' ? 'create' : 'connection'],
+    });
+    setExpandedActivity(null);
+  };
+
+  return (
+    <div className="app-bg min-h-full pb-28 px-4 pt-5">
+      <div className="flex items-center gap-3 mb-1">
+        <span className="text-2xl">🌿</span>
+        <h1 className="font-display text-2xl font-bold text-white leading-tight">Stay busy</h1>
+      </div>
+      <p className="text-ink-300 text-sm mb-5 ml-10 max-w-xs">
+        Healthy stuff to do — picked for you, near you, right now.
+      </p>
+
+      {/* Tabs */}
+      <div className="flex gap-1 bg-white/5 rounded-2xl p-1 mb-5">
+        {(['foryou', 'categories', 'events'] as const).map((t) => (
+          <button
+            key={t}
+            onClick={() => setTab(t)}
+            className={`flex-1 py-2 rounded-xl text-sm font-medium capitalize transition ${
+              tab === t ? 'bg-sage-500/30 text-white' : 'text-ink-300'
+            }`}
+          >
+            {t === 'foryou' ? 'For you' : t}
+          </button>
+        ))}
+      </div>
+
+      {/* FOR YOU */}
+      {tab === 'foryou' && (
+        <div className="space-y-3">
+          {forYou.length === 0 && (
+            <div className="text-center text-ink-400 text-sm py-10">
+              Add a hobby or two in onboarding to get better picks.
+            </div>
+          )}
+          {forYou.map((a) => (
+            <ActivityCard
+              key={a.id}
+              activity={a}
+              expanded={expandedActivity === a.id}
+              onToggle={() => setExpandedActivity(expandedActivity === a.id ? null : a.id)}
+              onDone={() => logDone(a)}
+              matchReason={whyThisMatch(a, profile.hobbies ?? [], profile.personality ?? [])}
+            />
+          ))}
+
+          {/* Profile echo card */}
+          {(profile.hobbies?.length || profile.personality?.length) ? (
+            <div className="glass rounded-3xl p-4 mt-4">
+              <div className="text-[10px] text-sage-300 uppercase tracking-widest mb-2">
+                Picks based on what you told me
+              </div>
+              <div className="flex flex-wrap gap-1.5">
+                {(profile.hobbies ?? []).slice(0, 6).map((h) => {
+                  const t = HOBBY_TAGS.find((x) => x.id === h);
+                  return t ? (
+                    <span key={h} className="text-[10px] glass rounded-full px-2.5 py-1 text-ink-200">
+                      {t.emoji} {t.label}
+                    </span>
+                  ) : null;
+                })}
+                {(profile.personality ?? []).slice(0, 3).map((p) => {
+                  const t = PERSONALITY_TAGS.find((x) => x.id === p);
+                  return t ? (
+                    <span key={p} className="text-[10px] glass rounded-full px-2.5 py-1 text-ink-200">
+                      {t.emoji} {t.label}
+                    </span>
+                  ) : null;
+                })}
+              </div>
+            </div>
+          ) : null}
+        </div>
+      )}
+
+      {/* CATEGORIES */}
+      {tab === 'categories' && (
+        <div>
+          <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-thin mb-3">
+            {CATEGORIES.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => setActiveCat(c.id)}
+                className={`flex-shrink-0 rounded-2xl px-3.5 py-2.5 transition ${
+                  activeCat === c.id
+                    ? 'bg-white/10 border border-white/30'
+                    : 'bg-white/5 border border-white/10'
+                }`}
+              >
+                <div className="flex items-center gap-2">
+                  <span className="text-lg">{c.emoji}</span>
+                  <div className="text-left">
+                    <div className="text-white font-semibold text-sm">{c.label}</div>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </div>
+
+          <div className="text-[10px] text-ink-400 uppercase tracking-widest mb-3 px-1">
+            {CATEGORIES.find((c) => c.id === activeCat)?.tagline}
+          </div>
+
+          <div className="space-y-3">
+            {catActivities.map((a) => (
+              <ActivityCard
+                key={a.id}
+                activity={a}
+                expanded={expandedActivity === a.id}
+                onToggle={() => setExpandedActivity(expandedActivity === a.id ? null : a.id)}
+                onDone={() => logDone(a)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* EVENTS */}
+      {tab === 'events' && (
+        <div className="space-y-3">
+          <div className="text-[10px] text-ink-400 uppercase tracking-widest mb-1 px-1">
+            Near {city}
+          </div>
+          <div className="text-[10px] text-amber-300/80 mb-4 px-1 leading-relaxed">
+            These are well-known meeting types and group formats. For exact times/places near you, search your city + "recovery meetings" or "support groups".
+          </div>
+
+          {events.map((e) => (
+            <EventCard key={e.id} event={e} />
+          ))}
+
+          <div className="glass rounded-3xl p-4 mt-4">
+            <div className="text-[10px] text-sage-300 uppercase tracking-widest mb-2">
+              How to find more in {city}
+            </div>
+            <div className="space-y-2 text-sm text-ink-200 leading-relaxed">
+              <div>🔍 Google: <span className="text-white">"{city} AA meetings"</span> or <span className="text-white">"recovery groups near me"</span></div>
+              <div>📱 Apps: <span className="text-white">Meeting Guide</span>, <span className="text-white">AA Big Book</span>, <span className="text-white">SMART Recovery</span></div>
+              <div>📞 SAMHSA helpline: <span className="text-white font-semibold">1-800-662-4357</span> (free, 24/7)</div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* SOS nudge when craving is high */}
+      {state.checkIns[state.checkIns.length - 1]?.craving && state.checkIns[state.checkIns.length - 1]!.craving! >= 4 && (
+        <div className="rounded-2xl border border-rose-500/30 bg-rose-500/5 p-3.5 mt-4 mx-1">
+          <div className="text-rose-300 text-[10px] font-semibold mb-1">
+            🌊 Craving right now?
+          </div>
+          <div className="text-ink-200 text-[11px] leading-relaxed">
+            Don't white-knuckle. Tap the red <span className="font-bold text-white">SOS</span> button — there's a 10-minute tool that helps.
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Why does this match? Used in For You tab.
+function whyThisMatch(a: Activity, hobbies: string[], personality: string[]): string {
+  const reasons: string[] = [];
+  if (a.hobbyMatches?.some((h) => hobbies.includes(h))) {
+    reasons.push('matches what you love');
+  }
+  if (a.personalityMatches?.some((p) => personality.includes(p))) {
+    reasons.push('fits your style');
+  }
+  if (a.bestWhen?.includes('craving')) reasons.push('good for cravings');
+  if (a.bestWhen?.includes('low')) reasons.push('good for low days');
+  if (a.bestWhen?.includes('lonely')) reasons.push('good for lonely days');
+  return reasons[0] || 'picked for you';
+}
+
+function ActivityCard({
+  activity: a,
+  expanded,
+  onToggle,
+  onDone,
+  matchReason,
+}: {
+  activity: Activity;
+  expanded: boolean;
+  onToggle: () => void;
+  onDone: () => void;
+  matchReason?: string;
+}) {
+  const cat = CATEGORIES.find((c) => c.id === a.category);
+  return (
+    <div className="glass rounded-3xl p-4 transition">
+      <button
+        onClick={onToggle}
+        className="w-full text-left"
+      >
+        <div className="flex items-start gap-3">
+          <div
+            className="w-11 h-11 rounded-2xl flex-shrink-0 flex items-center justify-center text-xl"
+            style={{ background: `${cat?.color}22`, border: `1px solid ${cat?.color}40` }}
+          >
+            {cat?.emoji}
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5">
+              <div className="text-white font-semibold leading-snug">{a.title}</div>
+            </div>
+            <div className="flex items-center gap-2 text-[10px] text-ink-400 mb-1">
+              <span>{a.duration}</span>
+              <span>·</span>
+              <span className="capitalize">{a.difficulty}</span>
+              {matchReason && (
+                <>
+                  <span>·</span>
+                  <span className="text-sage-300">{matchReason}</span>
+                </>
+              )}
+            </div>
+            <p className="text-ink-200 text-sm leading-relaxed">{a.description}</p>
+          </div>
+          <div className="text-ink-400 text-lg">{expanded ? '−' : '+'}</div>
+        </div>
+      </button>
+
+      {expanded && (
+        <div className="mt-4 ml-14 animate-floatUp">
+          {a.steps && a.steps.length > 0 && (
+            <div className="mb-3">
+              <div className="text-[10px] text-sage-300 uppercase tracking-widest mb-2">How</div>
+              <ol className="space-y-1.5">
+                {a.steps.map((s, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm text-ink-100 leading-relaxed">
+                    <span className="text-sage-300 text-xs mt-0.5 flex-shrink-0 font-bold">{i + 1}.</span>
+                    <span>{s}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+          <button
+            onClick={onDone}
+            className="btn-primary w-full text-sm !py-2.5"
+          >
+            ✓ I did this — log it as a win
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function EventCard({ event }: { event: LocalEvent }) {
+  const typeEmoji: Record<LocalEvent['type'], string> = {
+    meeting: '🤝',
+    class: '🧘',
+    group: '👥',
+    volunteer: '🙌',
+    outdoors: '🌲',
+  };
+  return (
+    <div className="glass rounded-2xl p-4">
+      <div className="flex items-start gap-3">
+        <div className="text-2xl flex-shrink-0">{typeEmoji[event.type]}</div>
+        <div className="flex-1 min-w-0">
+          <div className="text-white font-semibold leading-snug">{event.title}</div>
+          <div className="text-[10px] text-ink-400 mt-0.5 uppercase tracking-widest">
+            {event.when}
+          </div>
+          <p className="text-ink-200 text-sm mt-2 leading-relaxed">{event.description}</p>
+          <div className="text-[10px] text-ink-400 mt-2">📍 {event.where}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
